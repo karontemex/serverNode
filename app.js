@@ -18,7 +18,12 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 //importacion rutas
 var appRoutes = require('./routes/app');
 var usuarioRoutes = require('./routes/usuario');
+var hospitalRoutes = require('./routes/hospital');
+var medicoRoutes = require('./routes/medico');
+var busquedaRoutes = require('./routes/busqueda');
+var uploadRoutes = require('./routes/upload');
 var loginRoutes = require('./routes/login');
+var imagenesRoutes = require('./routes/imagenes');
 
 //DB conection
 mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', (err, res) => {
@@ -31,6 +36,16 @@ app.use('/', appRoutes);
 
 //usuario
 app.use('/usuario', usuarioRoutes);
+//hospital
+app.use('/hospital', hospitalRoutes);
+//medico
+app.use('/medico', medicoRoutes);
+//busqueda
+app.use('/busqueda', busquedaRoutes);
+//Upload
+app.use('/upload', uploadRoutes);
+//Upload
+app.use('/img', imagenesRoutes);
 //Login
 app.use('/login', loginRoutes);
 

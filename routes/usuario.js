@@ -13,22 +13,32 @@ var Usuario = require('../models/usuario');
 // =========================================
 
 app.get('/', function(req, res, next) {
-    Usuario.find({}, 'nombre email img role').exec(
-        (err, result) => {
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    mensaje: 'Error cargando usuarios',
-                    errors: err
+    var desde = req.query.desde || 0;
+    desde = Number(desde);
+    var hasta = 5;
+    Usuario.find({}, 'nombre email img role')
+        .skip(desde)
+        .limit(hasta)
+        .exec(
+            (err, result) => {
+                if (err) {
+                    return res.status(500).json({
+                        ok: false,
+                        mensaje: 'Error cargando usuarios',
+                        errors: err
+                    });
+                }
+                Usuario.count({}, (err, total) => {
+                    res.status(200).json({
+                        ok: true,
+                        mensaje: 'Usuarios caregados',
+                        usuarios: result,
+                        actual: desde,
+                        total: total
+                    });
                 });
             }
-            res.status(200).json({
-                ok: true,
-                mensaje: 'Usuarios caregados',
-                usuarios: result
-            });
-        }
-    );
+        );
 });
 
 // =========================================
